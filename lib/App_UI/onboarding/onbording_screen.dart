@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lavaloon_first_task/utils/app_color.dart';
+import 'package:lavaloon_first_task/auth/login.dart';
 
 class OnboardingScreen extends StatefulWidget {
   static const String routName = '/onboarding';
@@ -97,7 +98,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   curve: Curves.easeInOut,
                 );
               } else {
-                Navigator.of(context).pop();
+                Navigator.of(
+                  context,
+                ).pushReplacementNamed(LoginScreen.routeName);
               }
             },
             style: ElevatedButton.styleFrom(
