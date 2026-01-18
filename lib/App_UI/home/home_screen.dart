@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lavaloon_first_task/utils/app_color.dart';
+import 'package:lavaloon_first_task/l10n/app_localizations.dart';
 import 'package:lavaloon_first_task/App_UI/home/tabs/home_tab.dart';
 import 'package:lavaloon_first_task/App_UI/home/tabs/my_courses_tab.dart';
 import 'package:lavaloon_first_task/App_UI/home/tabs/blogs_tab.dart';
@@ -43,6 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildBottomNavBar() {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final backgroundColor = Theme.of(context).cardColor;
+    final loc = AppLocalizations.of(context)!;
 
     return Container(
       decoration: BoxDecoration(
@@ -86,7 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ? AppColors.primary
                   : (isDark ? AppColors.greyColor : AppColors.greyColor),
             ),
-            label: 'Home',
+            label: loc.home,
           ),
           BottomNavigationBarItem(
             icon: Icon(
@@ -95,7 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ? AppColors.primary
                   : (isDark ? AppColors.greyColor : AppColors.greyColor),
             ),
-            label: 'My Courses',
+            label: loc.myCourses,
           ),
           BottomNavigationBarItem(
             icon: Icon(
@@ -104,7 +106,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ? AppColors.primary
                   : (isDark ? AppColors.greyColor : AppColors.greyColor),
             ),
-            label: 'Blogs',
+            label: loc.blogs,
           ),
           BottomNavigationBarItem(
             icon: Icon(
@@ -113,7 +115,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ? AppColors.primary
                   : (isDark ? AppColors.greyColor : AppColors.greyColor),
             ),
-            label: 'My Profile',
+            label: loc.myProfile,
           ),
         ],
       ),

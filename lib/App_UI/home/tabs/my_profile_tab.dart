@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:lavaloon_first_task/utils/app_color.dart';
 import 'package:lavaloon_first_task/utils/theme_provider.dart';
+import 'package:lavaloon_first_task/utils/locale_provider.dart';
+import 'package:lavaloon_first_task/l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 
 class MyProfileTab extends StatelessWidget {
@@ -10,6 +12,8 @@ class MyProfileTab extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     final isDarkMode = themeProvider.themeMode == ThemeMode.dark;
+    final localeProvider = Provider.of<LocaleProvider>(context);
+    final loc = AppLocalizations.of(context)!;
 
     return Container(
       color: Theme.of(context).scaffoldBackgroundColor,
@@ -23,7 +27,9 @@ class MyProfileTab extends StatelessWidget {
               const SizedBox(height: 20),
               _buildName(),
               const SizedBox(height: 40),
-              _buildThemeToggle(context, themeProvider, isDarkMode),
+              _buildThemeToggle(context, themeProvider, isDarkMode, loc),
+              const SizedBox(height: 16),
+              _buildLanguageToggle(context, localeProvider, loc),
             ],
           ),
         ),
@@ -76,6 +82,7 @@ class MyProfileTab extends StatelessWidget {
     BuildContext context,
     ThemeProvider themeProvider,
     bool isDarkMode,
+    AppLocalizations loc,
   ) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -95,7 +102,7 @@ class MyProfileTab extends StatelessWidget {
               ),
               const SizedBox(width: 12),
               Text(
-                isDarkMode ? 'Dark Mode' : 'Light Mode',
+                isDarkMode ? loc.darkMode : loc.lightMode,
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
@@ -112,6 +119,75 @@ class MyProfileTab extends StatelessWidget {
               );
             },
             activeColor: AppColors.primary,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLanguageToggle(
+    BuildContext context,
+    LocaleProvider localeProvider,
+    AppLocalizations loc,
+  ) {
+    final isArabic = localeProvider.isArabic;
+
+    return Container(
+      margin: const EdgeInsets.only(top: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      decoration: BoxDecoration(
+        color: Theme.of(context).cardColor,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: AppColors.primary.withOpacity(0.3), width: 1),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            children: [
+              const Icon(Icons.language, color: AppColors.primary),
+              const SizedBox(width: 12),
+              Text(
+                loc.language,
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  color: Theme.of(context).textTheme.bodyLarge?.color,
+                ),
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              TextButton(
+                onPressed: () {
+                  localeProvider.setLocale(const Locale('en'));
+                },
+                child: Text(
+                  loc.english,
+                  style: TextStyle(
+                    color: isArabic
+                        ? Theme.of(context).textTheme.bodyLarge?.color
+                        : AppColors.primary,
+                    fontWeight: isArabic ? FontWeight.w400 : FontWeight.w600,
+                  ),
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  localeProvider.setLocale(const Locale('ar'));
+                },
+                child: Text(
+                  loc.arabic,
+                  style: TextStyle(
+                    color: isArabic
+                        ? AppColors.primary
+                        : Theme.of(context).textTheme.bodyLarge?.color,
+                    fontWeight: isArabic ? FontWeight.w600 : FontWeight.w400,
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),

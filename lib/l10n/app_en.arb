@@ -1,0 +1,21 @@
+{
+  "helloWorld": "Hello World!",
+  "@helloWorld": {
+    "description": "The conventional newborn programmer greeting"
+  },
+  "welcomeMessage": "Welcome, {username}",
+  "@welcomeMessage": {
+    "description": "Welcome message with username parameter"
+  },
+  "home": "Home",
+  "myCourses": "My Courses",
+  "blogs": "Blogs",
+  "myProfile": "My Profile",
+  "settings": "Settings",
+  "language": "Language",
+  "theme": "Theme",
+  "darkMode": "Dark Mode",
+  "lightMode": "Light Mode",
+  "english": "English",
+  "arabic": "العربية"
+}

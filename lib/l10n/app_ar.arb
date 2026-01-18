@@ -1,0 +1,21 @@
+{
+  "helloWorld": "مرحباً بك!",
+  "@helloWorld": {
+    "description": "The conventional newborn programmer greeting"
+  },
+  "welcomeMessage": "أهلاً بك يا {username}",
+  "@welcomeMessage": {
+    "description": "Welcome message with username parameter"
+  },
+  "home": "الرئيسية",
+  "myCourses": "دوراتي",
+  "blogs": "المدونات",
+  "myProfile": "ملفي الشخصي",
+  "settings": "الإعدادات",
+  "language": "اللغة",
+  "theme": "المظهر",
+  "darkMode": "الوضع الليلي",
+  "lightMode": "الوضع النهاري",
+  "english": "English",
+  "arabic": "العربية"
+}
