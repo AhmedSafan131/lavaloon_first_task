@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:provider/provider.dart';
 import 'package:lavaloon_first_task/utils/app_color.dart';
 import 'package:lavaloon_first_task/auth/login.dart';
+import 'package:lavaloon_first_task/utils/theme_provider.dart';
 
 class OnboardingScreen extends StatefulWidget {
   static const String routName = '/onboarding';
@@ -17,30 +20,46 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   final List<OnboardingModel> _onboardingData = [
     OnboardingModel(
       image: 'assets/images/splash1.png',
-      title: 'Welcome to DWD',
-      description:
-          'Welcome as you learn a world changing skill to get a better job..',
+      titleKey: 'onboarding1_title',
+      descriptionKey: 'onboarding1_desc',
     ),
     OnboardingModel(
       image: 'assets/images/splash2.png',
-      title: 'Choose Your Course',
-      description:
-          'Choose the course of your choice and gain industry knowledge and experience in it..',
+      titleKey: 'onboarding2_title',
+      descriptionKey: 'onboarding2_desc',
     ),
     OnboardingModel(
       image: 'assets/images/splash3.png',
-      title: 'Get Certified',
-      description:
-          'Start learning and get certified after your training to get a lucrative job',
+      titleKey: 'onboarding3_title',
+      descriptionKey: 'onboarding3_desc',
     ),
   ];
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    final isDarkMode = themeProvider.themeMode == ThemeMode.dark;
     return Scaffold(
       body: SafeArea(
         child: Column(
           children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: IconButton(
+                  onPressed: () {
+                    themeProvider.setThemeMode(
+                      isDarkMode ? ThemeMode.light : ThemeMode.dark,
+                    );
+                  },
+                  icon: Icon(
+                    isDarkMode ? Icons.dark_mode : Icons.light_mode,
+                    color: AppColors.primary,
+                  ),
+                ),
+              ),
+            ),
             Expanded(
               child: PageView.builder(
                 controller: _pageController,
@@ -83,9 +102,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   curve: Curves.easeInOut,
                 );
               },
-              child: const Text(
-                'Back',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              child: Text(
+                'back'.tr(),
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
               ),
             )
           else
@@ -112,7 +134,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 side: BorderSide(color: AppColors.primary),
               ),
             ),
-            child: Text(isLast ? 'Done' : 'Next'),
+            child: Text(isLast ? 'done'.tr() : 'next'.tr()),
           ),
         ],
       ),
@@ -122,13 +144,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
 class OnboardingModel {
   final String image;
-  final String title;
-  final String description;
+  final String titleKey;
+  final String descriptionKey;
 
   const OnboardingModel({
     required this.image,
-    required this.title,
-    required this.description,
+    required this.titleKey,
+    required this.descriptionKey,
   });
 }
 
@@ -171,7 +193,7 @@ class OnboardingPage extends StatelessWidget {
           ),
           const SizedBox(height: 24),
           Text(
-            model.title,
+            model.titleKey.tr(),
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
               fontWeight: FontWeight.bold,
               color: AppColors.primary,
@@ -180,7 +202,7 @@ class OnboardingPage extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           Text(
-            model.description,
+            model.descriptionKey.tr(),
             style: Theme.of(context).textTheme.bodyMedium,
             textAlign: TextAlign.center,
           ),

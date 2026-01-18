@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:lavaloon_first_task/utils/app_color.dart';
 import 'package:lavaloon_first_task/auth/sgin_up.dart';
 import 'package:lavaloon_first_task/auth/reset_password.dart';
@@ -27,7 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.whiteColor,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
@@ -67,7 +68,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Column(
       children: [
         Text(
-          'Welcome Back',
+          'login_title'.tr(),
           style: TextStyle(
             fontSize: 28,
             fontWeight: FontWeight.bold,
@@ -76,7 +77,7 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
         const SizedBox(height: 4),
         Text(
-          'Login to continue',
+          'login_subtitle'.tr(),
           style: TextStyle(fontSize: 16, color: AppColors.primary),
         ),
       ],
@@ -88,11 +89,11 @@ class _LoginScreenState extends State<LoginScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Email Address',
+          'email'.tr(),
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w500,
-            color: AppColors.blackColor,
+            color: Theme.of(context).textTheme.bodyMedium?.color,
           ),
         ),
         const SizedBox(height: 8),
@@ -101,7 +102,7 @@ class _LoginScreenState extends State<LoginScreen> {
           keyboardType: TextInputType.emailAddress,
           decoration: InputDecoration(
             filled: true,
-            fillColor: AppColors.whiteColor,
+            fillColor: Theme.of(context).cardColor,
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
               borderSide: BorderSide(color: AppColors.primary, width: 1),
@@ -125,11 +126,11 @@ class _LoginScreenState extends State<LoginScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Password',
+          'password'.tr(),
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w500,
-            color: AppColors.blackColor,
+            color: Theme.of(context).textTheme.bodyMedium?.color,
           ),
         ),
         const SizedBox(height: 8),
@@ -138,7 +139,7 @@ class _LoginScreenState extends State<LoginScreen> {
           obscureText: _obscurePassword,
           decoration: InputDecoration(
             filled: true,
-            fillColor: AppColors.whiteColor,
+            fillColor: Theme.of(context).cardColor,
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
               borderSide: BorderSide(color: AppColors.primary, width: 1),
@@ -154,7 +155,7 @@ class _LoginScreenState extends State<LoginScreen> {
             suffixIcon: IconButton(
               icon: Icon(
                 _obscurePassword ? Icons.visibility_off : Icons.visibility,
-                color: AppColors.greyColor,
+                color: Theme.of(context).iconTheme.color,
               ),
               onPressed: () {
                 setState(() {
@@ -176,7 +177,7 @@ class _LoginScreenState extends State<LoginScreen> {
           Navigator.of(context).pushNamed(ResetPasswordScreen.routeName);
         },
         child: Text(
-          'Forgot Password?',
+          'forgot_password'.tr(),
           style: TextStyle(color: AppColors.primary, fontSize: 14),
         ),
       ),
@@ -197,9 +198,9 @@ class _LoginScreenState extends State<LoginScreen> {
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           elevation: 0,
         ),
-        child: const Text(
-          'LOG IN',
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        child: Text(
+          'login_button'.tr(),
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
       ),
     );
@@ -210,7 +211,7 @@ class _LoginScreenState extends State<LoginScreen> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          'Don\'t have an account? ',
+          'no_account'.tr(),
           style: TextStyle(color: AppColors.greyColor, fontSize: 14),
         ),
         GestureDetector(
@@ -218,8 +219,8 @@ class _LoginScreenState extends State<LoginScreen> {
             Navigator.of(context).pushReplacementNamed(SignUpScreen.routeName);
           },
           child: Text(
-            'Sign up now',
-            style: TextStyle(
+            'signup_now'.tr(),
+            style: const TextStyle(
               color: AppColors.primary,
               fontSize: 14,
               fontWeight: FontWeight.w600,

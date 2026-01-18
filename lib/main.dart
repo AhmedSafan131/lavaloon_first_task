@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-// 1. Add these imports for localization
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:lavaloon_first_task/l10n/app_localizations.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:lavaloon_first_task/App_UI/onboarding/onbording_screen.dart';
 import 'package:lavaloon_first_task/App_UI/home/home_screen.dart';
 import 'package:lavaloon_first_task/auth/login.dart';
@@ -10,10 +8,19 @@ import 'package:lavaloon_first_task/auth/sgin_up.dart';
 import 'package:lavaloon_first_task/auth/reset_password.dart';
 import 'package:lavaloon_first_task/utils/theme_provider.dart';
 import 'package:lavaloon_first_task/utils/app_color.dart';
-import 'package:lavaloon_first_task/utils/locale_provider.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
+  runApp(
+    EasyLocalization(
+      supportedLocales: const [Locale('en'), Locale('ar')],
+      path: 'lib/l10n',
+      fallbackLocale: const Locale('en'),
+      saveLocale: true,
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -22,25 +29,17 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => ThemeProvider()),
-        ChangeNotifierProvider(create: (_) => LocaleProvider()), // Added this
-      ],
-      child: Consumer2<ThemeProvider, LocaleProvider>(
-        // Using Consumer2 for both
-        builder: (context, themeProvider, localeProvider, _) {
+      providers: [ChangeNotifierProvider(create: (_) => ThemeProvider())],
+      child: Consumer<ThemeProvider>(
+        builder: (context, themeProvider, _) {
+          final isArabic = context.locale.languageCode == 'ar';
           return MaterialApp(
             debugShowCheckedModeBanner: false,
 
             // --- Localization Config ---
-            locale: localeProvider.locale, // Set current language
-            supportedLocales: AppLocalizations.supportedLocales,
-            localizationsDelegates: const [
-              AppLocalizations.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
+            locale: context.locale,
+            supportedLocales: context.supportedLocales,
+            localizationsDelegates: context.localizationDelegates,
 
             // --- Theme Config ---
             theme: ThemeData(
@@ -56,7 +55,7 @@ class MyApp extends StatelessWidget {
               appBarTheme: AppBarTheme(
                 backgroundColor: AppColors.primary,
                 elevation: 0,
-                centerTitle: localeProvider.isArabic,
+                centerTitle: isArabic,
               ),
             ),
             darkTheme: ThemeData(
@@ -72,7 +71,7 @@ class MyApp extends StatelessWidget {
               appBarTheme: AppBarTheme(
                 backgroundColor: AppColors.primary,
                 elevation: 0,
-                centerTitle: localeProvider.isArabic,
+                centerTitle: isArabic,
               ),
             ),
             themeMode: themeProvider.themeMode,

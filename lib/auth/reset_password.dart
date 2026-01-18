@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:lavaloon_first_task/utils/app_color.dart';
 import 'package:lavaloon_first_task/auth/login.dart';
 
@@ -27,23 +28,21 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.whiteColor,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: AppColors.whiteColor,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.blackColor),
+          icon: Icon(
+            Icons.arrow_back,
+            color: Theme.of(context).iconTheme.color,
+          ),
           onPressed: () {
             Navigator.of(context).pop();
           },
         ),
-        title: const Text(
-          'Reset password',
-          style: TextStyle(
-            color: AppColors.blackColor,
-            fontWeight: FontWeight.bold,
-            fontSize: 18,
-          ),
+        title: Text(
+          'reset_password_appbar'.tr(),
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
         ),
         centerTitle: true,
       ),
@@ -70,11 +69,11 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'New Password',
+          'new_password'.tr(),
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w500,
-            color: AppColors.primary,
+            color: Theme.of(context).textTheme.bodyMedium?.color,
           ),
         ),
         const SizedBox(height: 8),
@@ -83,7 +82,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
           obscureText: _obscureNewPassword,
           decoration: InputDecoration(
             filled: true,
-            fillColor: AppColors.whiteColor,
+            fillColor: Theme.of(context).cardColor,
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
               borderSide: BorderSide(color: AppColors.primary, width: 1),
@@ -99,7 +98,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
             suffixIcon: IconButton(
               icon: Icon(
                 _obscureNewPassword ? Icons.visibility_off : Icons.visibility,
-                color: AppColors.greyColor,
+                color: Theme.of(context).iconTheme.color,
               ),
               onPressed: () {
                 setState(() {
@@ -118,11 +117,11 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Confirm New Password',
+          'confirm_new_password'.tr(),
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w500,
-            color: AppColors.primary,
+            color: Theme.of(context).textTheme.bodyMedium?.color,
           ),
         ),
         const SizedBox(height: 8),
@@ -131,7 +130,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
           obscureText: _obscureConfirmPassword,
           decoration: InputDecoration(
             filled: true,
-            fillColor: AppColors.whiteColor,
+            fillColor: Theme.of(context).cardColor,
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
               borderSide: BorderSide(color: AppColors.primary, width: 1),
@@ -149,7 +148,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 _obscureConfirmPassword
                     ? Icons.visibility_off
                     : Icons.visibility,
-                color: AppColors.greyColor,
+                color: Theme.of(context).iconTheme.color,
               ),
               onPressed: () {
                 setState(() {
@@ -178,9 +177,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           elevation: 0,
         ),
-        child: const Text(
-          'Submit',
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        child: Text(
+          'submit'.tr(),
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
       ),
     );
