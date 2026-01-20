@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:lavaloon_first_task/utils/app_color.dart';
 import 'package:lavaloon_first_task/utils/theme_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:lavaloon_first_task/utils/app_assets.dart';
 
 class MyProfileTab extends StatelessWidget {
   const MyProfileTab({super.key});
@@ -13,23 +14,20 @@ class MyProfileTab extends StatelessWidget {
     final isDarkMode = themeProvider.themeMode == ThemeMode.dark;
     final isArabic = context.locale.languageCode == 'ar';
 
-    return Container(
-      color: Theme.of(context).scaffoldBackgroundColor,
-      child: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24.0),
-          child: Column(
-            children: [
-              const SizedBox(height: 20),
-              _buildProfileImage(),
-              const SizedBox(height: 20),
-              _buildName(),
-              const SizedBox(height: 40),
-              _buildThemeToggle(context, themeProvider, isDarkMode),
-              const SizedBox(height: 16),
-              _buildLanguageToggle(context, isArabic),
-            ],
-          ),
+    return SafeArea(
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.all(24.0),
+        child: Column(
+          children: [
+            const SizedBox(height: 20),
+            _buildProfileImage(),
+            const SizedBox(height: 20),
+            _buildName(),
+            const SizedBox(height: 40),
+            _buildThemeToggle(context, themeProvider, isDarkMode),
+            const SizedBox(height: 16),
+            _buildLanguageToggle(context, isArabic),
+          ],
         ),
       ),
     );
@@ -46,7 +44,7 @@ class MyProfileTab extends StatelessWidget {
       ),
       child: ClipOval(
         child: Image.asset(
-          'assets/images/ahmed1.jpg',
+          AppAssets.profileImage,
           width: 120,
           height: 120,
           fit: BoxFit.cover,

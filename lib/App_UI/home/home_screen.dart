@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:lavaloon_first_task/utils/app_color.dart';
-import 'package:lavaloon_first_task/App_UI/home/tabs/home_tab.dart';
-import 'package:lavaloon_first_task/App_UI/home/tabs/my_courses_tab.dart';
-import 'package:lavaloon_first_task/App_UI/home/tabs/blogs_tab.dart';
-import 'package:lavaloon_first_task/App_UI/home/tabs/my_profile_tab.dart';
+import 'package:lavaloon_first_task/app_ui/home/tabs/home_tab.dart';
+import 'package:lavaloon_first_task/app_ui/home/tabs/my_courses_tab.dart';
+import 'package:lavaloon_first_task/app_ui/home/tabs/blogs_tab.dart';
+import 'package:lavaloon_first_task/app_ui/home/tabs/my_profile_tab.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String routeName = '/home';
@@ -16,30 +16,22 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
+  final List<Widget> _pages = const [
+    HomeTab(),
+    MyCoursesTab(),
+    BlogsTab(),
+    MyProfileTab(),
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: _buildCurrentPage(),
       bottomNavigationBar: _buildBottomNavBar(),
     );
   }
 
-  Widget _buildCurrentPage() {
-    switch (_currentIndex) {
-      case 0:
-        return const HomeTab();
-      case 1:
-        return const MyCoursesTab();
-      case 2:
-        return const BlogsTab();
-      case 3:
-        return const MyProfileTab();
-      default:
-        return const HomeTab();
-    }
-  }
+  Widget _buildCurrentPage() => _pages[_currentIndex];
 
   Widget _buildBottomNavBar() {
     final isDark = Theme.of(context).brightness == Brightness.dark;

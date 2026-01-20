@@ -6,13 +6,10 @@ class HomeTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Theme.of(context).scaffoldBackgroundColor,
-      child: Center(
-        child: Text(
-          'home'.tr(),
-          style: TextStyle(color: Theme.of(context).textTheme.bodyLarge?.color),
-        ),
+    return Center(
+      child: Text(
+        'home'.tr(),
+        style: TextStyle(color: Theme.of(context).textTheme.bodyLarge?.color),
       ),
     );
   }

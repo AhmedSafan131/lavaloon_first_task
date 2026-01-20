@@ -4,6 +4,9 @@ import 'package:provider/provider.dart';
 import 'package:lavaloon_first_task/utils/app_color.dart';
 import 'package:lavaloon_first_task/auth/login.dart';
 import 'package:lavaloon_first_task/utils/theme_provider.dart';
+import 'package:lavaloon_first_task/utils/app_assets.dart';
+import 'package:lavaloon_first_task/models/onboarding_model.dart';
+import 'package:lavaloon_first_task/widgets/onboarding_controls.dart';
 
 class OnboardingScreen extends StatefulWidget {
   static const String routName = '/onboarding';
@@ -19,17 +22,17 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   final List<OnboardingModel> _onboardingData = [
     OnboardingModel(
-      image: 'assets/images/splash1.png',
+      image: AppAssets.onboarding1,
       titleKey: 'onboarding1_title',
       descriptionKey: 'onboarding1_desc',
     ),
     OnboardingModel(
-      image: 'assets/images/splash2.png',
+      image: AppAssets.onboarding2,
       titleKey: 'onboarding2_title',
       descriptionKey: 'onboarding2_desc',
     ),
     OnboardingModel(
-      image: 'assets/images/splash3.png',
+      image: AppAssets.onboarding3,
       titleKey: 'onboarding3_title',
       descriptionKey: 'onboarding3_desc',
     ),
@@ -78,80 +81,22 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 },
               ),
             ),
-            _buildControls(),
+            OnboardingControls(
+              controller: _pageController,
+              isFirst: _currentPage == 0,
+              isLast: _currentPage == _onboardingData.length - 1,
+              onDone: () {
+                Navigator.of(context).pushReplacementNamed(
+                  LoginScreen.routeName,
+                );
+              },
+            ),
             const SizedBox(height: 20),
           ],
         ),
       ),
     );
   }
-
-  Widget _buildControls() {
-    final isLast = _currentPage == _onboardingData.length - 1;
-    final isFirst = _currentPage == 0;
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          if (!isFirst)
-            TextButton(
-              onPressed: () {
-                _pageController.previousPage(
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.easeInOut,
-                );
-              },
-              child: Text(
-                'back'.tr(),
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
-              ),
-            )
-          else
-            const SizedBox(width: 80),
-          ElevatedButton(
-            onPressed: () {
-              if (!isLast) {
-                _pageController.nextPage(
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.easeInOut,
-                );
-              } else {
-                Navigator.of(
-                  context,
-                ).pushReplacementNamed(LoginScreen.routeName);
-              }
-            },
-            style: ElevatedButton.styleFrom(
-              minimumSize: const Size(120, 44),
-              backgroundColor: AppColors.primary,
-              foregroundColor: AppColors.whiteColor,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(5),
-                side: BorderSide(color: AppColors.primary),
-              ),
-            ),
-            child: Text(isLast ? 'done'.tr() : 'next'.tr()),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class OnboardingModel {
-  final String image;
-  final String titleKey;
-  final String descriptionKey;
-
-  const OnboardingModel({
-    required this.image,
-    required this.titleKey,
-    required this.descriptionKey,
-  });
 }
 
 class OnboardingPage extends StatelessWidget {

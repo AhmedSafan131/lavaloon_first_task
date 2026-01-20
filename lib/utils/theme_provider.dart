@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+enum AppThemeMode { light, dark, system }
+
 class ThemeProvider extends ChangeNotifier {
   ThemeMode _themeMode = ThemeMode.light;
+  static const String _prefsKey = 'themeMode';
 
   ThemeProvider() {
     _loadTheme();
@@ -12,14 +15,9 @@ class ThemeProvider extends ChangeNotifier {
 
   Future<void> _loadTheme() async {
     final prefs = await SharedPreferences.getInstance();
-    final value = prefs.getString('themeMode');
-    if (value == 'dark') {
-      _themeMode = ThemeMode.dark;
-    } else if (value == 'light') {
-      _themeMode = ThemeMode.light;
-    } else if (value == 'system') {
-      _themeMode = ThemeMode.system;
-    }
+    final value = prefs.getString(_prefsKey);
+    final AppThemeMode mode = _parseAppThemeMode(value);
+    _themeMode = _toThemeMode(mode);
     notifyListeners();
   }
 
@@ -27,14 +25,36 @@ class ThemeProvider extends ChangeNotifier {
     _themeMode = mode;
     notifyListeners();
     final prefs = await SharedPreferences.getInstance();
-    String value;
-    if (mode == ThemeMode.dark) {
-      value = 'dark';
-    } else if (mode == ThemeMode.light) {
-      value = 'light';
-    } else {
-      value = 'system';
+    final AppThemeMode appMode = _toAppThemeMode(mode);
+    await prefs.setString(_prefsKey, appMode.name);
+  }
+
+  AppThemeMode _parseAppThemeMode(String? value) {
+    return AppThemeMode.values.firstWhere(
+      (e) => e.name == value,
+      orElse: () => AppThemeMode.light,
+    );
+  }
+
+  AppThemeMode _toAppThemeMode(ThemeMode mode) {
+    switch (mode) {
+      case ThemeMode.dark:
+        return AppThemeMode.dark;
+      case ThemeMode.light:
+        return AppThemeMode.light;
+      case ThemeMode.system:
+        return AppThemeMode.system;
     }
-    await prefs.setString('themeMode', value);
+  }
+
+  ThemeMode _toThemeMode(AppThemeMode mode) {
+    switch (mode) {
+      case AppThemeMode.dark:
+        return ThemeMode.dark;
+      case AppThemeMode.light:
+        return ThemeMode.light;
+      case AppThemeMode.system:
+        return ThemeMode.system;
+    }
   }
 }
