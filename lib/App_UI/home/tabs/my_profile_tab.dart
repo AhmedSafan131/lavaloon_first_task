@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:lavaloon_first_task/utils/translation_extension.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:lavaloon_first_task/utils/theme_extensions.dart';
 import 'package:lavaloon_first_task/utils/app_color.dart';
 import 'package:lavaloon_first_task/utils/theme_provider.dart';
 import 'package:provider/provider.dart';
@@ -97,11 +99,11 @@ class MyProfileTab extends StatelessWidget {
               ),
               const SizedBox(width: 12),
               Text(
-                isDarkMode ? 'darkMode'.tr() : 'lightMode'.tr(),
+                isDarkMode ? 'darkMode'.trn : 'lightMode'.trn,
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
-                  color: Theme.of(context).textTheme.bodyLarge?.color,
+                  color: context.textTheme.bodyLarge?.color,
                 ),
               ),
             ],
@@ -137,11 +139,11 @@ class MyProfileTab extends StatelessWidget {
               const Icon(Icons.language, color: AppColors.primary),
               const SizedBox(width: 12),
               Text(
-                'language'.tr(),
+                'language'.trn,
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
-                  color: Theme.of(context).textTheme.bodyLarge?.color,
+                  color: context.textTheme.bodyLarge?.color,
                 ),
               ),
             ],
@@ -153,10 +155,10 @@ class MyProfileTab extends StatelessWidget {
                   context.setLocale(const Locale('en'));
                 },
                 child: Text(
-                  'english'.tr(),
+                  'english'.trn,
                   style: TextStyle(
                     color: isArabic
-                        ? Theme.of(context).textTheme.bodyLarge?.color
+                        ? context.textTheme.bodyLarge?.color
                         : AppColors.primary,
                     fontWeight: isArabic ? FontWeight.w400 : FontWeight.w600,
                   ),
@@ -167,11 +169,11 @@ class MyProfileTab extends StatelessWidget {
                   context.setLocale(const Locale('ar'));
                 },
                 child: Text(
-                  'arabic'.tr(),
+                  'arabic'.trn,
                   style: TextStyle(
                     color: isArabic
                         ? AppColors.primary
-                        : Theme.of(context).textTheme.bodyLarge?.color,
+                        : context.textTheme.bodyLarge?.color,
                     fontWeight: isArabic ? FontWeight.w600 : FontWeight.w400,
                   ),
                 ),

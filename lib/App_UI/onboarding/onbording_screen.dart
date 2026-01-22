@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:easy_localization/easy_localization.dart';
+import 'package:lavaloon_first_task/utils/translation_extension.dart';
 import 'package:provider/provider.dart';
 import 'package:lavaloon_first_task/utils/app_color.dart';
 import 'package:lavaloon_first_task/auth/login.dart';
@@ -7,6 +7,8 @@ import 'package:lavaloon_first_task/utils/theme_provider.dart';
 import 'package:lavaloon_first_task/utils/app_assets.dart';
 import 'package:lavaloon_first_task/models/onboarding_model.dart';
 import 'package:lavaloon_first_task/widgets/onboarding_controls.dart';
+import 'package:lavaloon_first_task/utils/theme_extensions.dart';
+import 'package:responsive_builder/responsive_builder.dart';
 
 class OnboardingScreen extends StatefulWidget {
   static const String routName = '/onboarding';
@@ -86,9 +88,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               isFirst: _currentPage == 0,
               isLast: _currentPage == _onboardingData.length - 1,
               onDone: () {
-                Navigator.of(context).pushReplacementNamed(
-                  LoginScreen.routeName,
-                );
+                Navigator.of(
+                  context,
+                ).pushReplacementNamed(LoginScreen.routeName);
               },
             ),
             const SizedBox(height: 20),
@@ -112,47 +114,75 @@ class OnboardingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(24.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Image.asset(model.image, height: 240, fit: BoxFit.contain),
-          const SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: List.generate(
-              totalPages,
-              (i) => Container(
-                margin: const EdgeInsets.symmetric(horizontal: 4.0),
-                width: 8,
-                height: 8,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: i == currentPage
-                      ? AppColors.primary
-                      : Colors.grey[300],
+    return ResponsiveBuilder(
+      builder: (context, sizing) {
+        final isDesktop = sizing.deviceScreenType == DeviceScreenType.desktop;
+        final isTablet = sizing.deviceScreenType == DeviceScreenType.tablet;
+        final horizontalPadding = isDesktop ? 64.0 : isTablet ? 40.0 : 24.0;
+        final imageHeight = isDesktop ? 360.0 : isTablet ? 300.0 : 240.0;
+        final content = Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Image.asset(model.image, height: imageHeight, fit: BoxFit.contain),
+            const SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: List.generate(
+                totalPages,
+                (i) => Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 4.0),
+                  width: 8,
+                  height: 8,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: i == currentPage ? AppColors.primary : Colors.grey[300],
+                  ),
                 ),
               ),
             ),
-          ),
-          const SizedBox(height: 24),
-          Text(
-            model.titleKey.tr(),
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.bold,
-              color: AppColors.primary,
+            const SizedBox(height: 24),
+            Text(
+              model.titleKey.trn,
+              style: context.textTheme.titleLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+                color: AppColors.primary,
+              ),
+              textAlign: TextAlign.center,
             ),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 12),
-          Text(
-            model.descriptionKey.tr(),
-            style: Theme.of(context).textTheme.bodyMedium,
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
+            const SizedBox(height: 12),
+            Text(
+              model.descriptionKey.trn,
+              style: context.textTheme.bodyMedium,
+              textAlign: TextAlign.center,
+            ),
+          ],
+        );
+        if (isDesktop || isTablet) {
+          return Padding(
+            padding: EdgeInsets.all(horizontalPadding),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Center(
+                    child: Image.asset(
+                      model.image,
+                      height: imageHeight,
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 32),
+                Expanded(child: content),
+              ],
+            ),
+          );
+        }
+        return Padding(
+          padding: EdgeInsets.all(horizontalPadding),
+          child: content,
+        );
+      },
     );
   }
 }

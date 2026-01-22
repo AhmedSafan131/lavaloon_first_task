@@ -38,5 +38,6 @@
   "reset_password_appbar": "إعادة تعيين كلمة المرور",
   "new_password": "كلمة المرور الجديدة",
   "confirm_new_password": "تأكيد كلمة المرور الجديدة",
-  "submit": "تأكيد"
+  "submit": "تأكيد",
+  "password_too_short": "كلمة المرور يجب ألا تقل عن 4 أحرف"
 }

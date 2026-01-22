@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:lavaloon_first_task/utils/app_color.dart';
 import 'package:lavaloon_first_task/app_ui/home/tabs/home_tab.dart';
 import 'package:lavaloon_first_task/app_ui/home/tabs/my_courses_tab.dart';
 import 'package:lavaloon_first_task/app_ui/home/tabs/blogs_tab.dart';
 import 'package:lavaloon_first_task/app_ui/home/tabs/my_profile_tab.dart';
+import 'package:lavaloon_first_task/utils/translation_extension.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String routeName = '/home';
@@ -79,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ? AppColors.primary
                   : (isDark ? AppColors.greyColor : AppColors.greyColor),
             ),
-            label: 'home'.tr(),
+            label: 'home'.trn,
           ),
           BottomNavigationBarItem(
             icon: Icon(
@@ -88,7 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ? AppColors.primary
                   : (isDark ? AppColors.greyColor : AppColors.greyColor),
             ),
-            label: 'myCourses'.tr(),
+            label: 'myCourses'.trn,
           ),
           BottomNavigationBarItem(
             icon: Icon(
@@ -97,7 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ? AppColors.primary
                   : (isDark ? AppColors.greyColor : AppColors.greyColor),
             ),
-            label: 'blogs'.tr(),
+            label: 'blogs'.trn,
           ),
           BottomNavigationBarItem(
             icon: Icon(
@@ -106,7 +106,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ? AppColors.primary
                   : (isDark ? AppColors.greyColor : AppColors.greyColor),
             ),
-            label: 'myProfile'.tr(),
+            label: 'myProfile'.trn,
           ),
         ],
       ),

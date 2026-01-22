@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:easy_localization/easy_localization.dart';
+import 'package:lavaloon_first_task/utils/translation_extension.dart';
 import 'package:lavaloon_first_task/utils/app_color.dart';
 import 'package:lavaloon_first_task/auth/login.dart';
+import 'package:lavaloon_first_task/utils/theme_extensions.dart';
+import 'package:responsive_builder/responsive_builder.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
   static const String routeName = '/reset-password';
@@ -40,25 +42,38 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
           },
         ),
         title: Text(
-          'reset_password_appbar'.tr(),
+          'reset_password_appbar'.trn,
           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
         ),
         centerTitle: true,
       ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0),
-          child: Column(
-            children: [
-              const SizedBox(height: 40),
-              _buildNewPasswordField(),
-              const SizedBox(height: 20),
-              _buildConfirmPasswordField(),
-              const SizedBox(height: 32),
-              _buildSubmitButton(),
-            ],
-          ),
-        ),
+      body: ResponsiveBuilder(
+        builder: (context, sizing) {
+          final isDesktop = sizing.deviceScreenType == DeviceScreenType.desktop;
+          final isTablet = sizing.deviceScreenType == DeviceScreenType.tablet;
+          final horizontalPadding = isDesktop ? 64.0 : isTablet ? 40.0 : 24.0;
+          final maxWidth = isDesktop ? 900.0 : isTablet ? 700.0 : 500.0;
+          return SafeArea(
+            child: Center(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: maxWidth),
+                child: SingleChildScrollView(
+                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 40),
+                      _buildNewPasswordField(),
+                      const SizedBox(height: 20),
+                      _buildConfirmPasswordField(),
+                      const SizedBox(height: 32),
+                      _buildSubmitButton(),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          );
+        },
       ),
     );
   }
@@ -68,11 +83,11 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'new_password'.tr(),
+          'new_password'.trn,
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w500,
-            color: Theme.of(context).textTheme.bodyMedium?.color,
+            color: context.textTheme.bodyMedium?.color,
           ),
         ),
         const SizedBox(height: 8),
@@ -102,11 +117,11 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'confirm_new_password'.tr(),
+          'confirm_new_password'.trn,
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w500,
-            color: Theme.of(context).textTheme.bodyMedium?.color,
+            color: context.textTheme.bodyMedium?.color,
           ),
         ),
         const SizedBox(height: 8),
@@ -149,7 +164,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
           elevation: 0,
         ),
         child: Text(
-          'submit'.tr(),
+          'submit'.trn,
           style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
       ),

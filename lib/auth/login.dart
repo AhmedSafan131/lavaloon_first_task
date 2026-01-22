@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:easy_localization/easy_localization.dart';
+import 'package:lavaloon_first_task/utils/translation_extension.dart';
 import 'package:lavaloon_first_task/utils/app_color.dart';
 import 'package:lavaloon_first_task/auth/sgin_up.dart';
 import 'package:lavaloon_first_task/auth/reset_password.dart';
 import 'package:lavaloon_first_task/app_ui/home/home_screen.dart';
 import 'package:lavaloon_first_task/utils/app_assets.dart';
+import 'package:lavaloon_first_task/utils/theme_extensions.dart';
+import 'package:responsive_builder/responsive_builder.dart';
 
 class LoginScreen extends StatefulWidget {
   static const String routeName = '/login';
@@ -18,6 +20,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _obscurePassword = true;
+  final GlobalKey<FormState> _loginFormKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
@@ -29,37 +32,61 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0),
-          child: Column(
-            children: [
-              const SizedBox(height: 20),
-              _buildLogo(),
-              const SizedBox(height: 20),
-              _buildWelcomeText(),
-              const SizedBox(height: 32),
-              _buildEmailField(),
-              const SizedBox(height: 20),
-              _buildPasswordField(),
-              const SizedBox(height: 12),
-              _buildForgotPassword(),
-              const SizedBox(height: 32),
-              _buildLoginButton(),
-              const SizedBox(height: 24),
-              _buildSignUpLink(),
-            ],
-          ),
-        ),
+      body: ResponsiveBuilder(
+        builder: (context, sizing) {
+          final isDesktop = sizing.deviceScreenType == DeviceScreenType.desktop;
+          final isTablet = sizing.deviceScreenType == DeviceScreenType.tablet;
+          final horizontalPadding = isDesktop ? 64.0 : isTablet ? 40.0 : 24.0;
+          final maxWidth = isDesktop ? 900.0 : isTablet ? 700.0 : 500.0;
+          return SafeArea(
+            child: Center(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: maxWidth),
+                child: Form(
+                  key: _loginFormKey,
+                  child: SingleChildScrollView(
+                    padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 20),
+                        _buildLogo(sizing),
+                        const SizedBox(height: 20),
+                        _buildWelcomeText(),
+                        const SizedBox(height: 32),
+                        _buildEmailField(),
+                        const SizedBox(height: 20),
+                        _buildPasswordField(),
+                        const SizedBox(height: 12),
+                        _buildForgotPassword(),
+                        const SizedBox(height: 32),
+                        _buildLoginButton(),
+                        const SizedBox(height: 24),
+                        _buildSignUpLink(),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          );
+        },
       ),
     );
   }
 
-  Widget _buildLogo() {
+  Widget _buildLogo(SizingInformation sizing) {
     return Image.asset(
       AppAssets.logoBlack,
-      width: 120,
-      height: 120,
+      width: sizing.deviceScreenType == DeviceScreenType.desktop
+          ? 180
+          : sizing.deviceScreenType == DeviceScreenType.tablet
+              ? 160
+              : 120,
+      height: sizing.deviceScreenType == DeviceScreenType.desktop
+          ? 180
+          : sizing.deviceScreenType == DeviceScreenType.tablet
+              ? 160
+              : 120,
       fit: BoxFit.contain,
     );
   }
@@ -68,7 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Column(
       children: [
         Text(
-          'login_title'.tr(),
+          'login_title'.trn,
           style: TextStyle(
             fontSize: 28,
             fontWeight: FontWeight.bold,
@@ -77,7 +104,7 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
         const SizedBox(height: 4),
         Text(
-          'login_subtitle'.tr(),
+          'login_subtitle'.trn,
           style: TextStyle(fontSize: 16, color: AppColors.primary),
         ),
       ],
@@ -89,11 +116,11 @@ class _LoginScreenState extends State<LoginScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'email'.tr(),
+          'email'.trn,
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w500,
-            color: Theme.of(context).textTheme.bodyMedium?.color,
+            color: context.textTheme.bodyMedium?.color,
           ),
         ),
         const SizedBox(height: 8),
@@ -111,15 +138,15 @@ class _LoginScreenState extends State<LoginScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'password'.tr(),
+          'password'.trn,
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w500,
-            color: Theme.of(context).textTheme.bodyMedium?.color,
+            color: context.textTheme.bodyMedium?.color,
           ),
         ),
         const SizedBox(height: 8),
-        TextField(
+        TextFormField(
           controller: _passwordController,
           obscureText: _obscurePassword,
           decoration: InputDecoration(
@@ -135,6 +162,12 @@ class _LoginScreenState extends State<LoginScreen> {
               },
             ),
           ),
+          validator: (value) {
+            if ((value ?? '').length < 4) {
+              return 'password_too_short'.trn;
+            }
+            return null;
+          },
         ),
       ],
     );
@@ -148,7 +181,7 @@ class _LoginScreenState extends State<LoginScreen> {
           Navigator.of(context).pushNamed(ResetPasswordScreen.routeName);
         },
         child: Text(
-          'forgot_password'.tr(),
+          'forgot_password'.trn,
           style: TextStyle(color: AppColors.primary, fontSize: 14),
         ),
       ),
@@ -161,6 +194,8 @@ class _LoginScreenState extends State<LoginScreen> {
       height: 56,
       child: ElevatedButton(
         onPressed: () {
+          final valid = _loginFormKey.currentState?.validate() ?? false;
+          if (!valid) return;
           Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
         },
         style: ElevatedButton.styleFrom(
@@ -170,7 +205,7 @@ class _LoginScreenState extends State<LoginScreen> {
           elevation: 0,
         ),
         child: Text(
-          'login_button'.tr(),
+          'login_button'.trn,
           style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
       ),
@@ -182,7 +217,7 @@ class _LoginScreenState extends State<LoginScreen> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          'no_account'.tr(),
+          'no_account'.trn,
           style: TextStyle(color: AppColors.greyColor, fontSize: 14),
         ),
         GestureDetector(
@@ -190,7 +225,7 @@ class _LoginScreenState extends State<LoginScreen> {
             Navigator.of(context).pushReplacementNamed(SignUpScreen.routeName);
           },
           child: Text(
-            'signup_now'.tr(),
+            'signup_now'.trn,
             style: const TextStyle(
               color: AppColors.primary,
               fontSize: 14,

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:easy_localization/easy_localization.dart';
+import 'package:lavaloon_first_task/utils/translation_extension.dart';
 import 'package:lavaloon_first_task/utils/app_color.dart';
 import 'package:lavaloon_first_task/auth/login.dart';
 import 'package:lavaloon_first_task/utils/app_assets.dart';
+import 'package:lavaloon_first_task/utils/theme_extensions.dart';
+import 'package:responsive_builder/responsive_builder.dart';
 
 class SignUpScreen extends StatefulWidget {
   static const String routeName = '/signup';
@@ -20,6 +22,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       TextEditingController();
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
+  final GlobalKey<FormState> _signUpFormKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
@@ -33,46 +36,70 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0),
-          child: Column(
-            children: [
-              const SizedBox(height: 20),
-              _buildLogo(),
-              const SizedBox(height: 20),
-              _buildTitle(),
-              const SizedBox(height: 32),
-              _buildNameField(),
-              const SizedBox(height: 20),
-              _buildEmailField(),
-              const SizedBox(height: 20),
-              _buildPasswordField(),
-              const SizedBox(height: 20),
-              _buildConfirmPasswordField(),
-              const SizedBox(height: 32),
-              _buildSignUpButton(),
-              const SizedBox(height: 24),
-              _buildLoginLink(),
-            ],
-          ),
-        ),
+      body: ResponsiveBuilder(
+        builder: (context, sizing) {
+          final isDesktop = sizing.deviceScreenType == DeviceScreenType.desktop;
+          final isTablet = sizing.deviceScreenType == DeviceScreenType.tablet;
+          final horizontalPadding = isDesktop ? 64.0 : isTablet ? 40.0 : 24.0;
+          final maxWidth = isDesktop ? 900.0 : isTablet ? 700.0 : 500.0;
+          return SafeArea(
+            child: Center(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: maxWidth),
+                child: Form(
+                  key: _signUpFormKey,
+                  child: SingleChildScrollView(
+                    padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 20),
+                        _buildLogo(sizing),
+                        const SizedBox(height: 20),
+                        _buildTitle(),
+                        const SizedBox(height: 32),
+                        _buildNameField(),
+                        const SizedBox(height: 20),
+                        _buildEmailField(),
+                        const SizedBox(height: 20),
+                        _buildPasswordField(),
+                        const SizedBox(height: 20),
+                        _buildConfirmPasswordField(),
+                        const SizedBox(height: 32),
+                        _buildSignUpButton(),
+                        const SizedBox(height: 24),
+                        _buildLoginLink(),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          );
+        },
       ),
     );
   }
 
-  Widget _buildLogo() {
+  Widget _buildLogo(SizingInformation sizing) {
     return Image.asset(
       AppAssets.logoBlack,
-      width: 120,
-      height: 120,
+      width: sizing.deviceScreenType == DeviceScreenType.desktop
+          ? 180
+          : sizing.deviceScreenType == DeviceScreenType.tablet
+              ? 160
+              : 120,
+      height: sizing.deviceScreenType == DeviceScreenType.desktop
+          ? 180
+          : sizing.deviceScreenType == DeviceScreenType.tablet
+              ? 160
+              : 120,
       fit: BoxFit.contain,
     );
   }
 
   Widget _buildTitle() {
     return Text(
-      'signup_title'.tr(),
+      'signup_title'.trn,
       style: TextStyle(
         fontSize: 28,
         fontWeight: FontWeight.bold,
@@ -86,11 +113,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'name'.tr(),
+          'name'.trn,
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w500,
-            color: Theme.of(context).textTheme.bodyMedium?.color,
+            color: context.textTheme.bodyMedium?.color,
           ),
         ),
         const SizedBox(height: 8),
@@ -107,11 +134,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'email'.tr(),
+          'email'.trn,
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w500,
-            color: Theme.of(context).textTheme.bodyMedium?.color,
+            color: context.textTheme.bodyMedium?.color,
           ),
         ),
         const SizedBox(height: 8),
@@ -129,15 +156,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'password'.tr(),
+          'password'.trn,
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w500,
-            color: Theme.of(context).textTheme.bodyMedium?.color,
+            color: context.textTheme.bodyMedium?.color,
           ),
         ),
         const SizedBox(height: 8),
-        TextField(
+        TextFormField(
           controller: _passwordController,
           obscureText: _obscurePassword,
           decoration: InputDecoration(
@@ -153,6 +180,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
               },
             ),
           ),
+          validator: (value) {
+            if ((value ?? '').length < 4) {
+              return 'password_too_short'.trn;
+            }
+            return null;
+          },
         ),
       ],
     );
@@ -163,15 +196,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'confirm_password'.tr(),
+          'confirm_password'.trn,
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.w500,
-            color: Theme.of(context).textTheme.bodyMedium?.color,
+            color: context.textTheme.bodyMedium?.color,
           ),
         ),
         const SizedBox(height: 8),
-        TextField(
+        TextFormField(
           controller: _confirmPasswordController,
           obscureText: _obscureConfirmPassword,
           decoration: InputDecoration(
@@ -189,6 +222,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
               },
             ),
           ),
+          validator: (value) {
+            if ((value ?? '').length < 4) {
+              return 'password_too_short'.trn;
+            }
+            return null;
+          },
         ),
       ],
     );
@@ -200,7 +239,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
       height: 56,
       child: ElevatedButton(
         onPressed: () {
-          // Handle sign up
+          final valid = _signUpFormKey.currentState?.validate() ?? false;
+          if (!valid) return;
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.primary,
@@ -209,7 +249,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           elevation: 0,
         ),
         child: Text(
-          'signup_button'.tr(),
+          'signup_button'.trn,
           style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
       ),
@@ -221,7 +261,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          'have_account'.tr(),
+          'have_account'.trn,
           style: TextStyle(color: AppColors.blackColor, fontSize: 14),
         ),
         GestureDetector(
@@ -229,7 +269,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             Navigator.of(context).pushReplacementNamed(LoginScreen.routeName);
           },
           child: Text(
-            'login_link'.tr(),
+            'login_link'.trn,
             style: const TextStyle(
               color: AppColors.primary,
               fontSize: 14,

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:easy_localization/easy_localization.dart';
+import 'package:lavaloon_first_task/utils/translation_extension.dart';
 import 'package:lavaloon_first_task/utils/app_color.dart';
 
 class OnboardingControls extends StatelessWidget {
@@ -32,7 +32,7 @@ class OnboardingControls extends StatelessWidget {
                 );
               },
               child: Text(
-                'back'.tr(),
+                'back'.trn,
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
@@ -61,11 +61,10 @@ class OnboardingControls extends StatelessWidget {
                 side: BorderSide(color: AppColors.primary),
               ),
             ),
-            child: Text(isLast ? 'done'.tr() : 'next'.tr()),
+            child: Text(isLast ? 'done'.trn : 'next'.trn),
           ),
         ],
       ),
     );
   }
 }
-

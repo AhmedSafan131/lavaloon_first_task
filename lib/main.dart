@@ -7,20 +7,11 @@ import 'package:lavaloon_first_task/auth/login.dart';
 import 'package:lavaloon_first_task/auth/sgin_up.dart';
 import 'package:lavaloon_first_task/auth/reset_password.dart';
 import 'package:lavaloon_first_task/utils/theme_provider.dart';
-import 'package:lavaloon_first_task/themes/app_theme.dart';
+import 'package:lavaloon_first_task/utils/app_color.dart';
+import 'package:lavaloon_first_task/apprunnener/app_runner.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await EasyLocalization.ensureInitialized();
-  runApp(
-    EasyLocalization(
-      supportedLocales: const [Locale('en'), Locale('ar')],
-      path: 'lib/l10n',
-      fallbackLocale: const Locale('en'),
-      saveLocale: true,
-      child: const MyApp(),
-    ),
-  );
+Future<void> main() async {
+  await runApplication(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -42,19 +33,48 @@ class MyApp extends StatelessWidget {
             localizationsDelegates: context.localizationDelegates,
 
             // --- Theme Config ---
-            theme: AppTheme.light(isArabic),
-            darkTheme: AppTheme.dark(isArabic),
+            theme: ThemeData(
+              useMaterial3: true,
+              brightness: Brightness.light,
+              scaffoldBackgroundColor: AppColors.whiteColor,
+              cardColor: AppColors.whiteColor,
+              primaryColor: AppColors.primary,
+              colorScheme: ColorScheme.light(
+                primary: AppColors.primary,
+                surface: AppColors.whiteColor,
+              ),
+              appBarTheme: AppBarTheme(
+                backgroundColor: AppColors.primary,
+                elevation: 0,
+                centerTitle: isArabic,
+              ),
+            ),
+            darkTheme: ThemeData(
+              useMaterial3: true,
+              brightness: Brightness.dark,
+              scaffoldBackgroundColor: AppColors.primaryDark,
+              cardColor: AppColors.primaryDark,
+              primaryColor: AppColors.primary,
+              colorScheme: ColorScheme.dark(
+                primary: AppColors.primary,
+                surface: AppColors.primaryDark,
+              ),
+              appBarTheme: AppBarTheme(
+                backgroundColor: AppColors.primary,
+                elevation: 0,
+                centerTitle: isArabic,
+              ),
+            ),
             themeMode: themeProvider.themeMode,
 
             // --- Routes ---
-            initialRoute: OnboardingScreen.routName,
+            initialRoute: '/onboarding',
             routes: {
-              OnboardingScreen.routName: (context) => const OnboardingScreen(),
-              LoginScreen.routeName: (context) => const LoginScreen(),
-              SignUpScreen.routeName: (context) => const SignUpScreen(),
-              ResetPasswordScreen.routeName: (context) =>
-                  const ResetPasswordScreen(),
-              HomeScreen.routeName: (context) => const HomeScreen(),
+              '/onboarding': (context) => const OnboardingScreen(),
+              '/login': (context) => const LoginScreen(),
+              '/signup': (context) => const SignUpScreen(),
+              '/reset-password': (context) => const ResetPasswordScreen(),
+              '/home': (context) => const HomeScreen(),
             },
           );
         },

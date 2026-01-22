@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:easy_localization/easy_localization.dart';
+import 'package:lavaloon_first_task/utils/translation_extension.dart';
+import 'package:lavaloon_first_task/utils/theme_extensions.dart';
 
 class BlogsTab extends StatelessWidget {
   const BlogsTab({super.key});
@@ -8,8 +9,8 @@ class BlogsTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Text(
-        'blogs'.tr(),
-        style: TextStyle(color: Theme.of(context).textTheme.bodyLarge?.color),
+        'blogs'.trn,
+        style: TextStyle(color: context.textTheme.bodyLarge?.color),
       ),
     );
   }
