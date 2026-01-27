@@ -9,6 +9,7 @@ import 'package:lavaloon_first_task/models/onboarding_model.dart';
 import 'package:lavaloon_first_task/widgets/onboarding_controls.dart';
 import 'package:lavaloon_first_task/utils/theme_extensions.dart';
 import 'package:responsive_builder/responsive_builder.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class OnboardingScreen extends StatefulWidget {
   static const String routName = '/onboarding';
@@ -124,16 +125,16 @@ class OnboardingPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Image.asset(model.image, height: imageHeight, fit: BoxFit.contain),
-            const SizedBox(height: 16),
+            Image.asset(model.image, height: imageHeight.h, fit: BoxFit.contain),
+            SizedBox(height: 16.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: List.generate(
                 totalPages,
                 (i) => Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 4.0),
-                  width: 8,
-                  height: 8,
+                  margin: EdgeInsets.symmetric(horizontal: 4.w),
+                  width: 8.w,
+                  height: 8.w,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: i == currentPage ? AppColors.primary : Colors.grey[300],
@@ -141,7 +142,7 @@ class OnboardingPage extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 24),
+            SizedBox(height: 24.h),
             Text(
               model.titleKey.trn,
               style: context.textTheme.titleLarge?.copyWith(
@@ -150,7 +151,7 @@ class OnboardingPage extends StatelessWidget {
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 12),
+            SizedBox(height: 12.h),
             Text(
               model.descriptionKey.trn,
               style: context.textTheme.bodyMedium,
@@ -160,26 +161,26 @@ class OnboardingPage extends StatelessWidget {
         );
         if (isDesktop || isTablet) {
           return Padding(
-            padding: EdgeInsets.all(horizontalPadding),
+            padding: EdgeInsets.all(horizontalPadding.w),
             child: Row(
               children: [
                 Expanded(
                   child: Center(
                     child: Image.asset(
                       model.image,
-                      height: imageHeight,
+                      height: imageHeight.h,
                       fit: BoxFit.contain,
                     ),
                   ),
                 ),
-                const SizedBox(width: 32),
+                SizedBox(width: 32.w),
                 Expanded(child: content),
               ],
             ),
           );
         }
         return Padding(
-          padding: EdgeInsets.all(horizontalPadding),
+          padding: EdgeInsets.all(horizontalPadding.w),
           child: content,
         );
       },

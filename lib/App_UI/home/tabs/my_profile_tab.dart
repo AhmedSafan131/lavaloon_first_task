@@ -6,6 +6,8 @@ import 'package:lavaloon_first_task/utils/app_color.dart';
 import 'package:lavaloon_first_task/utils/theme_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:lavaloon_first_task/utils/app_assets.dart';
+import 'package:responsive_builder/responsive_builder.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class MyProfileTab extends StatelessWidget {
   const MyProfileTab({super.key});
@@ -17,45 +19,66 @@ class MyProfileTab extends StatelessWidget {
     final isArabic = context.locale.languageCode == 'ar';
 
     return SafeArea(
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.all(24.0),
-        child: Column(
-          children: [
-            const SizedBox(height: 20),
-            _buildProfileImage(),
-            const SizedBox(height: 20),
-            _buildName(),
-            const SizedBox(height: 40),
-            _buildThemeToggle(context, themeProvider, isDarkMode),
-            const SizedBox(height: 16),
-            _buildLanguageToggle(context, isArabic),
-          ],
-        ),
+      child: ResponsiveBuilder(
+        builder: (context, sizing) {
+          final isDesktop = sizing.deviceScreenType == DeviceScreenType.desktop;
+          final isTablet = sizing.deviceScreenType == DeviceScreenType.tablet;
+          final horizontalPadding = isDesktop
+              ? 64.0
+              : isTablet
+              ? 40.0
+              : 24.0;
+          final maxWidth = isDesktop
+              ? 900.0
+              : isTablet
+              ? 700.0
+              : 500.0;
+          return Center(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(maxWidth: maxWidth),
+              child: SingleChildScrollView(
+                padding: EdgeInsets.all(horizontalPadding.w),
+                child: Column(
+                  children: [
+                    SizedBox(height: 20.h),
+                    _buildProfileImage(),
+                    SizedBox(height: 20.h),
+                    _buildName(),
+                    SizedBox(height: 40.h),
+                    _buildThemeToggle(context, themeProvider, isDarkMode),
+                    SizedBox(height: 16.h),
+                    _buildLanguageToggle(context, isArabic),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
       ),
     );
   }
 
   Widget _buildProfileImage() {
     return Container(
-      width: 120,
-      height: 120,
+      width: 120.w,
+      height: 120.w,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: AppColors.primary,
-        border: Border.all(color: AppColors.primary, width: 3),
+        border: Border.all(color: AppColors.primary, width: 3.w),
       ),
       child: ClipOval(
         child: Image.asset(
           AppAssets.profileImage,
-          width: 120,
-          height: 120,
+          width: 120.w,
+          height: 120.w,
           fit: BoxFit.cover,
           errorBuilder: (context, error, stackTrace) {
             return Container(
               color: AppColors.primary,
-              child: const Icon(
+              child: Icon(
                 Icons.person,
-                size: 80,
+                size: 80.w,
                 color: AppColors.whiteColor,
               ),
             );
@@ -69,7 +92,7 @@ class MyProfileTab extends StatelessWidget {
     return Text(
       'Ahmed Safan',
       style: TextStyle(
-        fontSize: 24,
+        fontSize: 24.sp,
         fontWeight: FontWeight.bold,
         color: AppColors.primary,
       ),
@@ -82,11 +105,14 @@ class MyProfileTab extends StatelessWidget {
     bool isDarkMode,
   ) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.primary.withOpacity(0.3), width: 1),
+        borderRadius: BorderRadius.circular(12.r),
+        border: Border.all(
+          color: AppColors.primary.withValues(alpha: 0.3),
+          width: 1.w,
+        ),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -97,11 +123,11 @@ class MyProfileTab extends StatelessWidget {
                 isDarkMode ? Icons.dark_mode : Icons.light_mode,
                 color: AppColors.primary,
               ),
-              const SizedBox(width: 12),
+              SizedBox(width: 12.w),
               Text(
                 isDarkMode ? 'darkMode'.trn : 'lightMode'.trn,
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: 16.sp,
                   fontWeight: FontWeight.w500,
                   color: context.textTheme.bodyLarge?.color,
                 ),
@@ -115,7 +141,7 @@ class MyProfileTab extends StatelessWidget {
                 value ? ThemeMode.dark : ThemeMode.light,
               );
             },
-            activeColor: AppColors.primary,
+            thumbColor: MaterialStateProperty.all(AppColors.primary),
           ),
         ],
       ),
@@ -124,12 +150,15 @@ class MyProfileTab extends StatelessWidget {
 
   Widget _buildLanguageToggle(BuildContext context, bool isArabic) {
     return Container(
-      margin: const EdgeInsets.only(top: 12),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      margin: EdgeInsets.only(top: 12.h),
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.primary.withOpacity(0.3), width: 1),
+        borderRadius: BorderRadius.circular(12.r),
+        border: Border.all(
+          color: AppColors.primary.withValues(alpha: 0.3),
+          width: 1.w,
+        ),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -137,11 +166,11 @@ class MyProfileTab extends StatelessWidget {
           Row(
             children: [
               const Icon(Icons.language, color: AppColors.primary),
-              const SizedBox(width: 12),
+              SizedBox(width: 12.w),
               Text(
                 'language'.trn,
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: 16.sp,
                   fontWeight: FontWeight.w500,
                   color: context.textTheme.bodyLarge?.color,
                 ),

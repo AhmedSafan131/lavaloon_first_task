@@ -7,6 +7,7 @@ import 'package:lavaloon_first_task/app_ui/home/home_screen.dart';
 import 'package:lavaloon_first_task/utils/app_assets.dart';
 import 'package:lavaloon_first_task/utils/theme_extensions.dart';
 import 'package:responsive_builder/responsive_builder.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class LoginScreen extends StatefulWidget {
   static const String routeName = '/login';
@@ -37,7 +38,11 @@ class _LoginScreenState extends State<LoginScreen> {
           final isDesktop = sizing.deviceScreenType == DeviceScreenType.desktop;
           final isTablet = sizing.deviceScreenType == DeviceScreenType.tablet;
           final horizontalPadding = isDesktop ? 64.0 : isTablet ? 40.0 : 24.0;
-          final maxWidth = isDesktop ? 900.0 : isTablet ? 700.0 : 500.0;
+          final maxWidth = isDesktop
+              ? 900.0
+              : isTablet
+              ? 700.0
+              : 500.0;
           return SafeArea(
             child: Center(
               child: ConstrainedBox(
@@ -45,22 +50,23 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Form(
                   key: _loginFormKey,
                   child: SingleChildScrollView(
-                    padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: horizontalPadding.w),
                     child: Column(
                       children: [
-                        const SizedBox(height: 20),
+                        SizedBox(height: 20.h),
                         _buildLogo(sizing),
-                        const SizedBox(height: 20),
+                        SizedBox(height: 20.h),
                         _buildWelcomeText(),
-                        const SizedBox(height: 32),
+                        SizedBox(height: 32.h),
                         _buildEmailField(),
-                        const SizedBox(height: 20),
+                        SizedBox(height: 20.h),
                         _buildPasswordField(),
-                        const SizedBox(height: 12),
+                        SizedBox(height: 12.h),
                         _buildForgotPassword(),
-                        const SizedBox(height: 32),
+                        SizedBox(height: 32.h),
                         _buildLoginButton(),
-                        const SizedBox(height: 24),
+                        SizedBox(height: 24.h),
                         _buildSignUpLink(),
                       ],
                     ),
@@ -78,15 +84,15 @@ class _LoginScreenState extends State<LoginScreen> {
     return Image.asset(
       AppAssets.logoBlack,
       width: sizing.deviceScreenType == DeviceScreenType.desktop
-          ? 180
+          ? 180.w
           : sizing.deviceScreenType == DeviceScreenType.tablet
-              ? 160
-              : 120,
+              ? 160.w
+              : 120.w,
       height: sizing.deviceScreenType == DeviceScreenType.desktop
-          ? 180
+          ? 180.h
           : sizing.deviceScreenType == DeviceScreenType.tablet
-              ? 160
-              : 120,
+              ? 160.h
+              : 120.h,
       fit: BoxFit.contain,
     );
   }
@@ -97,15 +103,15 @@ class _LoginScreenState extends State<LoginScreen> {
         Text(
           'login_title'.trn,
           style: TextStyle(
-            fontSize: 28,
+            fontSize: 28.sp,
             fontWeight: FontWeight.bold,
             color: AppColors.primary,
           ),
         ),
-        const SizedBox(height: 4),
+        SizedBox(height: 4.h),
         Text(
           'login_subtitle'.trn,
-          style: TextStyle(fontSize: 16, color: AppColors.primary),
+          style: TextStyle(fontSize: 16.sp, color: AppColors.primary),
         ),
       ],
     );
@@ -118,12 +124,12 @@ class _LoginScreenState extends State<LoginScreen> {
         Text(
           'email'.trn,
           style: TextStyle(
-            fontSize: 14,
+            fontSize: 14.sp,
             fontWeight: FontWeight.w500,
             color: context.textTheme.bodyMedium?.color,
           ),
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: 8.h),
         TextField(
           controller: _emailController,
           keyboardType: TextInputType.emailAddress,
@@ -140,12 +146,12 @@ class _LoginScreenState extends State<LoginScreen> {
         Text(
           'password'.trn,
           style: TextStyle(
-            fontSize: 14,
+            fontSize: 14.sp,
             fontWeight: FontWeight.w500,
             color: context.textTheme.bodyMedium?.color,
           ),
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: 8.h),
         TextFormField(
           controller: _passwordController,
           obscureText: _obscurePassword,
@@ -182,7 +188,7 @@ class _LoginScreenState extends State<LoginScreen> {
         },
         child: Text(
           'forgot_password'.trn,
-          style: TextStyle(color: AppColors.primary, fontSize: 14),
+          style: TextStyle(color: AppColors.primary, fontSize: 14.sp),
         ),
       ),
     );
@@ -191,7 +197,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget _buildLoginButton() {
     return SizedBox(
       width: double.infinity,
-      height: 56,
+      height: 56.h,
       child: ElevatedButton(
         onPressed: () {
           final valid = _loginFormKey.currentState?.validate() ?? false;
@@ -201,12 +207,13 @@ class _LoginScreenState extends State<LoginScreen> {
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.primary,
           foregroundColor: AppColors.whiteColor,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
           elevation: 0,
         ),
         child: Text(
           'login_button'.trn,
-          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
         ),
       ),
     );
@@ -218,7 +225,7 @@ class _LoginScreenState extends State<LoginScreen> {
       children: [
         Text(
           'no_account'.trn,
-          style: TextStyle(color: AppColors.greyColor, fontSize: 14),
+          style: TextStyle(color: AppColors.greyColor, fontSize: 14.sp),
         ),
         GestureDetector(
           onTap: () {
@@ -226,9 +233,9 @@ class _LoginScreenState extends State<LoginScreen> {
           },
           child: Text(
             'signup_now'.trn,
-            style: const TextStyle(
+            style: TextStyle(
               color: AppColors.primary,
-              fontSize: 14,
+              fontSize: 14.sp,
               fontWeight: FontWeight.w600,
             ),
           ),

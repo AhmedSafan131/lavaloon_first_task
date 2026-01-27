@@ -4,6 +4,7 @@ import 'package:lavaloon_first_task/utils/app_color.dart';
 import 'package:lavaloon_first_task/auth/login.dart';
 import 'package:lavaloon_first_task/utils/theme_extensions.dart';
 import 'package:responsive_builder/responsive_builder.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
   static const String routeName = '/reset-password';
@@ -58,14 +59,15 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
               child: ConstrainedBox(
                 constraints: BoxConstraints(maxWidth: maxWidth),
                 child: SingleChildScrollView(
-                  padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                  padding:
+                      EdgeInsets.symmetric(horizontal: horizontalPadding.w),
                   child: Column(
                     children: [
-                      const SizedBox(height: 40),
+                      SizedBox(height: 40.h),
                       _buildNewPasswordField(),
-                      const SizedBox(height: 20),
+                      SizedBox(height: 20.h),
                       _buildConfirmPasswordField(),
-                      const SizedBox(height: 32),
+                      SizedBox(height: 32.h),
                       _buildSubmitButton(),
                     ],
                   ),
@@ -85,12 +87,12 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
         Text(
           'new_password'.trn,
           style: TextStyle(
-            fontSize: 14,
+            fontSize: 14.sp,
             fontWeight: FontWeight.w500,
             color: context.textTheme.bodyMedium?.color,
           ),
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: 8.h),
         TextField(
           controller: _newPasswordController,
           obscureText: _obscureNewPassword,
@@ -119,12 +121,12 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
         Text(
           'confirm_new_password'.trn,
           style: TextStyle(
-            fontSize: 14,
+            fontSize: 14.sp,
             fontWeight: FontWeight.w500,
             color: context.textTheme.bodyMedium?.color,
           ),
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: 8.h),
         TextField(
           controller: _confirmPasswordController,
           obscureText: _obscureConfirmPassword,
@@ -151,7 +153,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   Widget _buildSubmitButton() {
     return SizedBox(
       width: double.infinity,
-      height: 56,
+      height: 56.h,
       child: ElevatedButton(
         onPressed: () {
           // Handle password reset
@@ -160,12 +162,13 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.primary,
           foregroundColor: AppColors.whiteColor,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
           elevation: 0,
         ),
         child: Text(
           'submit'.trn,
-          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
         ),
       ),
     );

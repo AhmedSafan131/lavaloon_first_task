@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lavaloon_first_task/utils/translation_extension.dart';
 import 'package:lavaloon_first_task/utils/app_color.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class OnboardingControls extends StatelessWidget {
   final PageController controller;
@@ -19,7 +20,7 @@ class OnboardingControls extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      padding: EdgeInsets.symmetric(horizontal: 16.w),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -33,14 +34,14 @@ class OnboardingControls extends StatelessWidget {
               },
               child: Text(
                 'back'.trn,
-                style: const TextStyle(
+                style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 16,
+                  fontSize: 16.sp,
                 ),
               ),
             )
           else
-            const SizedBox(width: 80),
+            SizedBox(width: 80.w),
           ElevatedButton(
             onPressed: () {
               if (!isLast) {
@@ -53,11 +54,11 @@ class OnboardingControls extends StatelessWidget {
               }
             },
             style: ElevatedButton.styleFrom(
-              minimumSize: const Size(120, 44),
+              minimumSize: Size(120.w, 44.h),
               backgroundColor: AppColors.primary,
               foregroundColor: AppColors.whiteColor,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(5),
+                borderRadius: BorderRadius.circular(5.r),
                 side: BorderSide(color: AppColors.primary),
               ),
             ),

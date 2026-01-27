@@ -5,6 +5,7 @@ import 'package:lavaloon_first_task/auth/login.dart';
 import 'package:lavaloon_first_task/utils/app_assets.dart';
 import 'package:lavaloon_first_task/utils/theme_extensions.dart';
 import 'package:responsive_builder/responsive_builder.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SignUpScreen extends StatefulWidget {
   static const String routeName = '/signup';
@@ -41,7 +42,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
           final isDesktop = sizing.deviceScreenType == DeviceScreenType.desktop;
           final isTablet = sizing.deviceScreenType == DeviceScreenType.tablet;
           final horizontalPadding = isDesktop ? 64.0 : isTablet ? 40.0 : 24.0;
-          final maxWidth = isDesktop ? 900.0 : isTablet ? 700.0 : 500.0;
+          final maxWidth = isDesktop
+              ? 900.0
+              : isTablet
+              ? 700.0
+              : 500.0;
           return SafeArea(
             child: Center(
               child: ConstrainedBox(
@@ -49,24 +54,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 child: Form(
                   key: _signUpFormKey,
                   child: SingleChildScrollView(
-                    padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: horizontalPadding.w),
                     child: Column(
                       children: [
-                        const SizedBox(height: 20),
+                        SizedBox(height: 20.h),
                         _buildLogo(sizing),
-                        const SizedBox(height: 20),
+                        SizedBox(height: 20.h),
                         _buildTitle(),
-                        const SizedBox(height: 32),
+                        SizedBox(height: 32.h),
                         _buildNameField(),
-                        const SizedBox(height: 20),
+                        SizedBox(height: 20.h),
                         _buildEmailField(),
-                        const SizedBox(height: 20),
+                        SizedBox(height: 20.h),
                         _buildPasswordField(),
-                        const SizedBox(height: 20),
+                        SizedBox(height: 20.h),
                         _buildConfirmPasswordField(),
-                        const SizedBox(height: 32),
+                        SizedBox(height: 32.h),
                         _buildSignUpButton(),
-                        const SizedBox(height: 24),
+                        SizedBox(height: 24.h),
                         _buildLoginLink(),
                       ],
                     ),
@@ -84,15 +90,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return Image.asset(
       AppAssets.logoBlack,
       width: sizing.deviceScreenType == DeviceScreenType.desktop
-          ? 180
+          ? 180.w
           : sizing.deviceScreenType == DeviceScreenType.tablet
-              ? 160
-              : 120,
+              ? 160.w
+              : 120.w,
       height: sizing.deviceScreenType == DeviceScreenType.desktop
-          ? 180
+          ? 180.h
           : sizing.deviceScreenType == DeviceScreenType.tablet
-              ? 160
-              : 120,
+              ? 160.h
+              : 120.h,
       fit: BoxFit.contain,
     );
   }
@@ -101,7 +107,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return Text(
       'signup_title'.trn,
       style: TextStyle(
-        fontSize: 28,
+        fontSize: 28.sp,
         fontWeight: FontWeight.bold,
         color: AppColors.primary,
       ),
@@ -115,12 +121,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
         Text(
           'name'.trn,
           style: TextStyle(
-            fontSize: 14,
+            fontSize: 14.sp,
             fontWeight: FontWeight.w500,
             color: context.textTheme.bodyMedium?.color,
           ),
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: 8.h),
         TextField(
           controller: _nameController,
           decoration: const InputDecoration(),
@@ -136,12 +142,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
         Text(
           'email'.trn,
           style: TextStyle(
-            fontSize: 14,
+            fontSize: 14.sp,
             fontWeight: FontWeight.w500,
             color: context.textTheme.bodyMedium?.color,
           ),
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: 8.h),
         TextField(
           controller: _emailController,
           keyboardType: TextInputType.emailAddress,
@@ -158,12 +164,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
         Text(
           'password'.trn,
           style: TextStyle(
-            fontSize: 14,
+            fontSize: 14.sp,
             fontWeight: FontWeight.w500,
             color: context.textTheme.bodyMedium?.color,
           ),
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: 8.h),
         TextFormField(
           controller: _passwordController,
           obscureText: _obscurePassword,
@@ -198,12 +204,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
         Text(
           'confirm_password'.trn,
           style: TextStyle(
-            fontSize: 14,
+            fontSize: 14.sp,
             fontWeight: FontWeight.w500,
             color: context.textTheme.bodyMedium?.color,
           ),
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: 8.h),
         TextFormField(
           controller: _confirmPasswordController,
           obscureText: _obscureConfirmPassword,
@@ -236,7 +242,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget _buildSignUpButton() {
     return SizedBox(
       width: double.infinity,
-      height: 56,
+      height: 56.h,
       child: ElevatedButton(
         onPressed: () {
           final valid = _signUpFormKey.currentState?.validate() ?? false;
@@ -245,12 +251,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.primary,
           foregroundColor: AppColors.whiteColor,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
           elevation: 0,
         ),
         child: Text(
           'signup_button'.trn,
-          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
         ),
       ),
     );
@@ -262,7 +269,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       children: [
         Text(
           'have_account'.trn,
-          style: TextStyle(color: AppColors.blackColor, fontSize: 14),
+          style: TextStyle(color: AppColors.blackColor, fontSize: 14.sp),
         ),
         GestureDetector(
           onTap: () {
@@ -270,9 +277,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
           },
           child: Text(
             'login_link'.trn,
-            style: const TextStyle(
+            style: TextStyle(
               color: AppColors.primary,
-              fontSize: 14,
+              fontSize: 14.sp,
               fontWeight: FontWeight.w600,
             ),
           ),
